@@ -111,11 +111,7 @@ public class RemoteServer extends NanoHTTPD {
                             int code = (int) rs[0];
                             String mime = (String) rs[1];
                             InputStream stream = rs[2] != null ? (InputStream) rs[2] : null;
-                            Response response = NanoHTTPD.newChunkedResponse(
-                                    NanoHTTPD.Response.Status.lookup(code),
-                                    mime,
-                                    stream
-                            );
+                            Response response = NanoHTTPD.newChunkedResponse(NanoHTTPD.Response.Status.lookup(code), mime, stream);
                             return response;
                         } catch (Throwable th) {
                             return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "500");
@@ -134,9 +130,9 @@ public class RemoteServer extends NanoHTTPD {
                                 return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, fileList(root, f));
                             }
                         } else {
-                            if("Hisense".equals(android.os.Build.MANUFACTURER)){
+                            if ("Hisense".equals(android.os.Build.MANUFACTURER)) {
                                 return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, hSFileList());
-                            }else {
+                            } else {
                                 return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "File " + file + " not found!");
                             }
                         }
@@ -191,8 +187,7 @@ public class RemoteServer extends NanoHTTPD {
                                 File tmp = new File(tmpFile);
                                 String root = Environment.getExternalStorageDirectory().getAbsolutePath();
                                 File file = new File(root + "/" + path + "/" + fn);
-                                if (file.exists())
-                                    file.delete();
+                                if (file.exists()) file.delete();
                                 if (tmp.exists()) {
                                     if (fn.toLowerCase().endsWith(".zip")) {
                                         unzip(tmp, root + "/" + path);
@@ -200,8 +195,7 @@ public class RemoteServer extends NanoHTTPD {
                                         FileUtils.copyFile(tmp, file);
                                     }
                                 }
-                                if (tmp.exists())
-                                    tmp.delete();
+                                if (tmp.exists()) tmp.delete();
                             }
                         }
                         return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, "OK");
@@ -213,8 +207,7 @@ public class RemoteServer extends NanoHTTPD {
                         if (!file.exists()) {
                             file.mkdirs();
                             File flag = new File(root + "/" + path + "/" + name + "/.tvbox_folder");
-                            if (!flag.exists())
-                                flag.createNewFile();
+                            if (!flag.exists()) flag.createNewFile();
                         }
                         return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, "OK");
                     } else if (fileName.equals("/delFolder")) {
@@ -309,9 +302,12 @@ public class RemoteServer extends NanoHTTPD {
         return sdf.format(date);
     }
 
-    String hSFileList(){
+    String hSFileList() {
         JsonObject info = new JsonObject();
-        info.add("files",new JsonArray());
+        info.addProperty("remote", getServerAddress().replace("http://", "clan://"));
+        info.addProperty("del", 0);
+        info.addProperty("parent", ".");
+        info.add("files", new JsonArray());
         return info.toString();
     }
 
@@ -371,19 +367,16 @@ public class RemoteServer extends NanoHTTPD {
                 extractFile(is, filePath);
             } else {
                 File dir = new File(filePath);
-                if (!dir.exists())
-                    dir.mkdirs();
+                if (!dir.exists()) dir.mkdirs();
                 File flag = new File(dir + "/.tvbox_folder");
-                if (!flag.exists())
-                    flag.createNewFile();
+                if (!flag.exists()) flag.createNewFile();
             }
         }
     }
 
     void extractFile(InputStream inputStream, String destFilePath) throws Throwable {
         File dst = new File(destFilePath);
-        if (dst.exists())
-            dst.delete();
+        if (dst.exists()) dst.delete();
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destFilePath));
         byte[] bytesIn = new byte[2048];
         int len = inputStream.read(bytesIn);
