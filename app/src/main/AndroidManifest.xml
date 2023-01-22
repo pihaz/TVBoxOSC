@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
@@ -27,6 +28,7 @@
 
         <activity
             android:name=".ui.activity.HomeActivity"
+            android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,12 +63,16 @@
             android:name=".ui.activity.CollectActivity"
             android:screenOrientation="landscape" />
 
-        <receiver android:name=".receiver.SearchReceiver">
+        <receiver
+            android:name=".receiver.SearchReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.content.movie.search.Action" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.CustomWebReceiver">
+        <receiver
+            android:name=".receiver.CustomWebReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.content.movie.custom.web.Action" />
             </intent-filter>
