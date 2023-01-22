@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.receiver.SearchReceiver;
 import com.github.tvbox.osc.util.HawkConfig;
@@ -67,7 +69,7 @@ public class ControlManager {
                         intent.setPackage(mContext.getPackageName());
                         intent.setComponent(new ComponentName(mContext, SearchReceiver.class));
                         intent.putExtras(bundle);
-                        mContext.sendBroadcast(intent);
+                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
                     }
                 }
 
