@@ -104,7 +104,7 @@ function listFile(path) {
         current_remote = info.remote;
         let array = info.files;
         if (path === '' && array.length == 0)
-            warnToast('读取本地文件失败，可能没有存储权限');
+            warnToast('读取本地文件失败，可能没有存储权限或者设备为海信');
         clear_list();
         if (parent !== '.')
             add_file(tpl_top(parent));
