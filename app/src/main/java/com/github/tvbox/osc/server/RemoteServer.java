@@ -134,7 +134,11 @@ public class RemoteServer extends NanoHTTPD {
                                 return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, fileList(root, f));
                             }
                         } else {
-                            return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "File " + file + " not found!");
+                            if("Hisense".equals(android.os.Build.MANUFACTURER)){
+                                return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, hSFileList());
+                            }else {
+                                return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "File " + file + " not found!");
+                            }
                         }
                     } catch (Throwable th) {
                         return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, th.getMessage());
@@ -303,6 +307,12 @@ public class RemoteServer extends NanoHTTPD {
         Date date = calendar.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat(fmt);
         return sdf.format(date);
+    }
+
+    String hSFileList(){
+        JsonObject info = new JsonObject();
+        info.add("files",new JsonArray());
+        return info.toString();
     }
 
     String fileList(String root, String path) {
