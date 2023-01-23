@@ -21,14 +21,16 @@ public class SearchReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (action.equals(intent.getAction()) && intent.getExtras() != null) {
+            String title = intent.getExtras().getString("title");
             if (AppManager.getInstance().getActivity(SearchActivity.class) != null) {
                 AppManager.getInstance().backActivity(SearchActivity.class);
             } else {
                 Intent newIntent = new Intent(context, SearchActivity.class);
+                newIntent.putExtra("title", title);
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(newIntent);
             }
-            EventBus.getDefault().post(new ServerEvent(ServerEvent.SERVER_SEARCH, intent.getExtras().getString("title")));
+            EventBus.getDefault().post(new ServerEvent(ServerEvent.SERVER_SEARCH, title));
         }
     }
 }
