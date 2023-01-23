@@ -47,7 +47,7 @@ public class CollectActivity extends BaseActivity {
     private void toggleDelMode() {
         delMode = !delMode;
         tvDelTip.setVisibility(delMode ? View.VISIBLE : View.GONE);
-        tvDel.setTextColor(delMode ? getResources().getColor(R.color.color_FF0057) : Color.WHITE);
+        tvDel.setTextColor(delMode ? getResources().getColor(R.color.color_theme) : Color.WHITE);
     }
 
     private void initView() {
@@ -114,6 +114,16 @@ public class CollectActivity extends BaseActivity {
                         }
                     }
                 }
+            }
+        });
+        collectAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                FastClickCheckUtil.check(view);
+                VodCollect vodInfo = collectAdapter.getData().get(position);
+                collectAdapter.remove(position);
+                RoomDataManger.deleteVodCollect(vodInfo.getId());
+                return true;
             }
         });
     }

@@ -62,7 +62,11 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
         }*/
         helper.setVisible(R.id.tvLang, false);
         helper.setVisible(R.id.tvArea, false);
-        helper.setVisible(R.id.tvNote, false);
+        if (item.note == null || item.note.isEmpty()) {
+            helper.setVisible(R.id.tvNote, false);
+        } else {
+            helper.setText(R.id.tvNote, item.note);
+        }
         helper.setText(R.id.tvName, item.name);
         // helper.setText(R.id.tvActor, item.actor);
         ImageView ivThumb = helper.getView(R.id.ivThumb);
@@ -73,7 +77,7 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
                     .transform(new RoundTransformation(MD5.string2MD5(item.pic + item.name))
                             .centerCorp(true)
                             .override(AutoSizeUtils.mm2px(mContext, 300), AutoSizeUtils.mm2px(mContext, 400))
-                            .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL))
+                            .roundRadius(AutoSizeUtils.mm2px(mContext, 15), RoundTransformation.RoundType.ALL))
                     .placeholder(R.drawable.img_loading_placeholder)
                     .error(R.drawable.img_loading_placeholder)
                     .into(ivThumb);

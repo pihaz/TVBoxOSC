@@ -388,7 +388,7 @@ public abstract class BaseVideoController extends FrameLayout
     /**
      * 播放和暂停
      */
-    protected void togglePlay() {
+    public void togglePlay() {
         mControlWrapper.togglePlay();
     }
 
@@ -616,7 +616,7 @@ public abstract class BaseVideoController extends FrameLayout
                     mOrientationHelper.disable();
                 }
                 if (hasCutout()) {
-                    CutoutUtil.adaptCutoutAboveAndroidP(getContext(), false);
+                    CutoutUtil.adaptCutoutAboveAndroidP(getContext(), true);
                 }
                 break;
             case VideoView.PLAYER_FULL_SCREEN:
