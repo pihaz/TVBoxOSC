@@ -28,7 +28,6 @@
 
         <activity
             android:name=".ui.activity.HomeActivity"
-            android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,16 +62,12 @@
             android:name=".ui.activity.CollectActivity"
             android:screenOrientation="landscape" />
 
-        <receiver
-            android:name=".receiver.SearchReceiver"
-            android:exported="false">
+        <receiver android:name=".receiver.SearchReceiver">
             <intent-filter>
                 <action android:name="android.content.movie.search.Action" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".receiver.CustomWebReceiver"
-            android:exported="false">
+        <receiver android:name=".receiver.CustomWebReceiver">
             <intent-filter>
                 <action android:name="android.content.movie.custom.web.Action" />
             </intent-filter>
@@ -81,7 +76,6 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"

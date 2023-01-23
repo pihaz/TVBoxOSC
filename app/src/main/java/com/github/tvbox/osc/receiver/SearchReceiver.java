@@ -23,13 +23,12 @@ public class SearchReceiver extends BroadcastReceiver {
         if (action.equals(intent.getAction()) && intent.getExtras() != null) {
             if (AppManager.getInstance().getActivity(SearchActivity.class) != null) {
                 AppManager.getInstance().backActivity(SearchActivity.class);
-                EventBus.getDefault().post(new ServerEvent(ServerEvent.SERVER_SEARCH, intent.getExtras().getString("title")));
             } else {
                 Intent newIntent = new Intent(context, SearchActivity.class);
-                newIntent.putExtra("title", intent.getExtras().getString("title"));
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(newIntent);
             }
+            EventBus.getDefault().post(new ServerEvent(ServerEvent.SERVER_SEARCH, intent.getExtras().getString("title")));
         }
     }
 }
