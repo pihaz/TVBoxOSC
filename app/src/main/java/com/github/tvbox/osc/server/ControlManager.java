@@ -1,13 +1,13 @@
 package com.github.tvbox.osc.server;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.github.tvbox.osc.event.RefreshEvent;
-import com.github.tvbox.osc.receiver.SearchReceiver;
+import com.github.tvbox.osc.event.ServerEvent;
+import com.github.tvbox.osc.ui.activity.SearchActivity;
+import com.github.tvbox.osc.util.AppManager;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.orhanobut.hawk.Hawk;
 
@@ -60,14 +60,15 @@ public class ControlManager {
                 @Override
                 public void onTextReceived(String text) {
                     if (!TextUtils.isEmpty(text)) {
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("title", text);
-                        intent.setAction(SearchReceiver.action);
-                        intent.setPackage(mContext.getPackageName());
-                        intent.setComponent(new ComponentName(mContext, SearchReceiver.class));
-                        intent.putExtras(bundle);
-                        mContext.sendBroadcast(intent);
+                        if (AppManager.getInstance().getActivity(SearchActivity.class) != null) {
+                            AppManager.getInstance().backActivity(SearchActivity.class);
+                        } else {
+                            Intent newIntent = new Intent(mContext, SearchActivity.class);
+                            newIntent.putExtra("title", text);
+                            newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            mContext.startActivity(newIntent);
+                        }
+                        EventBus.getDefault().post(new ServerEvent(ServerEvent.SERVER_SEARCH, text));
                     }
                 }
 
